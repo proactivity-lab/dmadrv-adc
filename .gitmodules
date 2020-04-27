@@ -1,0 +1,45 @@
+[submodule "zoo/thinnect.node-buildsystem"]
+	path = zoo/thinnect.node-buildsystem
+	url = https://github.com/thinnect/node-buildsystem.git
+	branch = master
+[submodule "zoo/thinnect.node-platform"]
+	path = zoo/thinnect.node-platform
+	url = https://github.com/thinnect/node-platform.git
+	branch = master
+
+[submodule "zoo/thinnect.cmsis-freertos"]
+	path = zoo/thinnect.cmsis-freertos
+	url = https://github.com/thinnect/cmsis-freertos
+	branch = master
+[submodule "zoo/thinnect.device-signature"]
+	path = zoo/thinnect.device-signature
+	url = https://github.com/thinnect/device-signature.git
+	branch = master
+[submodule "zoo/thinnect.lll"]
+	path = zoo/thinnect.lll
+	url = https://github.com/thinnect/lll.git
+	branch = master
+
+[submodule "zoo/thinnect.dev-platforms"]
+	path = zoo/thinnect.dev-platforms
+	url = https://github.com/thinnect/dev-platforms.git
+	branch = master
+
+[submodule "zoo/lammertb.libcrc"]
+	path = zoo/lammertb.libcrc
+	url = https://github.com/lammertb/libcrc.git
+	branch = master
+[submodule "zoo/jtbr.endianness"]
+	path = zoo/jtbr.endianness
+	url = https://gist.github.com/7a43e6281e6cca353b33ee501421860c.git
+	branch = master
+[submodule "zoo/graphitemaster.incbin"]
+	path = zoo/graphitemaster.incbin
+	url = https://github.com/graphitemaster/incbin.git
+	branch = master
+
+[submodule "zoo/FreeRTOS-Kernel"]
+	path = zoo/FreeRTOS-Kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
+	branch = master
+
