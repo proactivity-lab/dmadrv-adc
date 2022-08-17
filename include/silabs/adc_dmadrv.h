@@ -35,7 +35,7 @@ void dmadrv_adc_init(uint16_t count, uint16_t frequency, dmadrv_adc_cb_f cb, voi
  * @param group - Input group.
  * @param sel   - Input to put in the group.
  */
-void dmadrv_adc_add_input(ADC_ScanInputGroup_TypeDef group, ADC_PosSel_TypeDef sel);
+void dmadrv_adc_add_input(void);
 
 /**
  * Start sampling.
