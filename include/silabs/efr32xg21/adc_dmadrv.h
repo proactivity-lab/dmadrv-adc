@@ -34,9 +34,9 @@ void dmadrv_adc_init(uint16_t count, uint16_t frequency, dmadrv_adc_cb_f cb, voi
  * Add an input to be sampled.
  * @param pos_input        - Input to sample.
  * @param iadc_bus_alloc   - IADC bus allocation.
- * @param iadc_bus         - IADC bus.
+ * @param iadc_bus_addr    - IADC bus.
  */
-void dmadrv_adc_add_input(IADC_PosInput_t pos_input, uint32_t iadc_bus_alloc, uint32_t iadc_bus);
+void dmadrv_adc_add_input(IADC_PosInput_t pos_input, uint32_t iadc_bus_alloc, volatile uint32_t *iadc_bus_addr);
 
 /**
  * Start sampling.
