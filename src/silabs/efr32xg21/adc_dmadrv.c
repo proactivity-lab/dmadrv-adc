@@ -1,7 +1,7 @@
 /**
  * Simplified ping-pong ADC stream sampling with DMA and PRS.
  *
- * Copyright ProLab 2020
+ * Copyright ProLab 2022
  * @license MIT
  */
 #include "adc_dmadrv.h"
@@ -22,12 +22,12 @@
 #include "log.h"
 #include "sys_panic.h"
 
-#define IADC_INPUT_0_PORT_PIN     iadcPosInputPortBPin1;
+//#define IADC_INPUT_0_PORT_PIN     iadcPosInputPortBPin1;
 
 // When changing GPIO port/pins above, make sure to change xBUSALLOC macro's
 // accordingly.
-#define IADC_INPUT_0_BUS          BBUSALLOC
-#define IADC_INPUT_0_BUSALLOC     GPIO_BBUSALLOC_BODD0_ADC0
+//#define IADC_INPUT_0_BUS          BBUSALLOC
+//#define IADC_INPUT_0_BUSALLOC     GPIO_BBUSALLOC_BODD0_ADC0
 
 #define CLK_SRC_ADC_FREQ          1000000 // CLK_SRC_ADC
 #define CLK_ADC_FREQ              100000 // CLK_ADC
@@ -67,9 +67,26 @@ void dmadrv_adc_deinit()
 	DMADRV_FreeChannel(m_dma_channel);
 }
 
-void dmadrv_adc_add_input(void)
+void dmadrv_adc_add_input(IADC_PosInput_t pos_input, uint32_t iadc_bus_alloc, uint32_t iadc_bus)
 {
-	//ADC_ScanSingleEndedInputAdd(&m_scan, inputGroup, singleEndedSel);
+	IADC_InitSingle_t initSingle = IADC_INITSINGLE_DEFAULT;
+  IADC_SingleInput_t initSingleInput = IADC_SINGLEINPUT_DEFAULT;
+
+	// Single initialization
+  initSingle.triggerSelect = iadcTriggerSelTimer;
+  initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
+
+	  // Enable triggering of single conversion
+  initSingle.start = true;
+
+  // Configure Input sources for single ended conversion
+  initSingleInput.posInput = pos_input;
+  initSingleInput.negInput = iadcNegInputGnd;
+	  // Initialize Single
+  IADC_initSingle(IADC0, &initSingle, &initSingleInput);
+
+  // Allocate the analog bus for ADC0 inputs
+  iadc_bus |= iadc_bus_alloc;
 }
 
 static bool dmadrv_callback(unsigned int channel, unsigned int sequenceNo, void *data)
@@ -101,8 +118,6 @@ static void adc_setup(void)
   // Declare init structs
   IADC_Init_t init = IADC_INIT_DEFAULT;
   IADC_AllConfigs_t initAllConfigs = IADC_ALLCONFIGS_DEFAULT;
-  IADC_InitSingle_t initSingle = IADC_INITSINGLE_DEFAULT;
-  IADC_SingleInput_t initSingleInput = IADC_SINGLEINPUT_DEFAULT;
 
   // Reset IADC to reset configuration in case it has been modified
   IADC_reset(IADC0);
@@ -136,25 +151,10 @@ static void adc_setup(void)
                                                           iadcCfgModeNormal,
                                                           init.srcClkPrescale);
 
-  // Single initialization
-  initSingle.triggerSelect = iadcTriggerSelTimer;
-  initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
 
-  // Enable triggering of single conversion
-  initSingle.start = true;
-
-  // Configure Input sources for single ended conversion
-  initSingleInput.posInput = IADC_INPUT_0_PORT_PIN;
-  initSingleInput.negInput = iadcNegInputGnd;
 
   // Initialize IADC
   IADC_init(IADC0, &init, &initAllConfigs);
-
-  // Initialize Single
-  IADC_initSingle(IADC0, &initSingle, &initSingleInput);
-
-  // Allocate the analog bus for ADC0 inputs
-  GPIO->IADC_INPUT_0_BUS |= IADC_INPUT_0_BUSALLOC;
 }
 
 
